@@ -1,0 +1,23 @@
+service: db
+
+frameworkVersion: ">=1.8.0 <2.0.0"
+
+custom:
+  stage: dev
+  
+provider:
+  name: aws
+  runtime: python3.7
+  region: ap-southeast-1
+          
+functions:
+  putStudent:
+    handler: python/put_student.handler
+    events:
+    - http:
+        cors: true
+        authorizer:
+          name: pool_auth
+          arn: arn:aws:cognito-idp:ap-southeast-1:021903227276:userpool/ap-southeast-1_8aQkNdVF9
+        path: /put
+        method: post
