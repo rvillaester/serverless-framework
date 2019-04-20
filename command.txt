@@ -1,0 +1,22 @@
+References:
+    https://serverless.com/framework/docs/providers/aws/guide/quick-start/
+
+# Create a new Serverless Service/Project
+serverless create --template aws-nodejs --path my-service
+
+# Deploy the service
+serverless deploy -v
+
+# Deploy a specific function
+serverless deploy function -f hello
+
+# Invokes a Function and returns logs
+serverless invoke -f hello -l
+
+# Fetch the Function Logs
+serverless logs -f hello -t
+
+# Clean up
+serverless remove
+
+Installation: https://serverless.com/framework/docs/providers/aws/guide/installation/
