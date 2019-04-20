@@ -1,0 +1,45 @@
+service: serverless-node-demo
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: ap-southeast-1
+  versionFunctions: false
+  iamRoleStatements:
+    $ref: ./iamRoleStatements.json
+
+functions:
+  putToS3:
+    handler: putToS3.handler
+    events:
+    - http:
+        authorizer:
+          name: pool_auth
+          arn: arn:aws:cognito-idp:ap-southeast-1:021903227276:userpool/ap-southeast-1_8aQkNdVF9
+        path: /putToS3
+        method: post
+        cors: true
+  getFromS3:
+    handler: getFromS3.handler
+    events:
+    - http:
+        authorizer:
+          name: pool_auth
+          arn: arn:aws:cognito-idp:ap-southeast-1:021903227276:userpool/ap-southeast-1_8aQkNdVF9
+        path: /getFromS3
+        method: get
+        cors: true
+
+resources:
+  Resources:
+    GatewayResponse:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+        StatusCode: '401'
